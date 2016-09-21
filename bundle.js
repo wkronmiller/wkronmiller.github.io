@@ -108,13 +108,6 @@
 
 	(0, _reactTapEventPlugin2.default)();
 
-	var mainContainerStyle = {
-	    marginLeft: '5vw',
-	    marginRight: '5vw',
-	    minHeight: '90vh',
-	    fontFamily: 'Roboto'
-	};
-
 	var Main = function Main(_ref) {
 	    var children = _ref.children;
 	    var params = _ref.params;
@@ -129,7 +122,7 @@
 	            _react2.default.createElement(_MainNav2.default, null),
 	            _react2.default.createElement(
 	                'div',
-	                { className: 'container', style: mainContainerStyle },
+	                { className: 'container', style: _props.Styles.indexContainer },
 	                children
 	            )
 	        )
@@ -150,7 +143,12 @@
 	            _react2.default.createElement(_reactRouter.Route, { path: 'chat', component: _Chat.Chat }),
 	            _react2.default.createElement(_reactRouter.Route, { path: 'blog', component: _Blog.Blog }),
 	            _react2.default.createElement(_reactRouter.Route, { path: 'research', component: _Research.Research }),
-	            _react2.default.createElement(_reactRouter.Route, { path: 'resume', component: _Resume.Resume })
+	            _react2.default.createElement(
+	                _reactRouter.Route,
+	                { path: 'resume' },
+	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _Resume.Resume }),
+	                _react2.default.createElement(_reactRouter.Route, { path: 'tex', component: _Resume.ResumeTeX })
+	            )
 	        )
 	    )
 	), document.getElementById('root'));
@@ -92471,9 +92469,7 @@
 	            primaryText: 'Welcome',
 	            containerElement: _react2.default.createElement(_reactRouter.Link, { to: '/' }) }),
 	          _react2.default.createElement(_materialUi.MenuItem, { value: 'Blog', primaryText: 'Blog',
-	            containerElement: _react2.default.createElement(_reactRouter.Link, { to: '/blog' }) }),
-	          _react2.default.createElement(_materialUi.MenuItem, { value: 'Chat', primaryText: 'Chat',
-	            containerElement: _react2.default.createElement(_reactRouter.Link, { to: '/chat' }) })
+	            containerElement: _react2.default.createElement(_reactRouter.Link, { to: '/blog' }) })
 	        )
 	      );
 	    }
@@ -92493,11 +92489,13 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Greeting = exports.bodyPaper = undefined;
+	exports.Greeting = undefined;
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(33);
 
 	var _materialUi = __webpack_require__(582);
 
@@ -92505,22 +92503,80 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var bodyPaper = exports.bodyPaper = {
-	  minHeight: '90vh',
-	  width: '100%',
-	  padding: '2em'
+	var Profile = function Profile(_ref) {
+	  var title = _ref.title;
+	  var icon = _ref.icon;
+	  var url = _ref.url;
+
+	  return _react2.default.createElement(
+	    _materialUi.Card,
+	    null,
+	    _react2.default.createElement(_materialUi.CardHeader, {
+	      title: title,
+	      avatar: icon }),
+	    _react2.default.createElement(
+	      _materialUi.CardActions,
+	      null,
+	      _react2.default.createElement(
+	        _materialUi.FlatButton,
+	        {
+	          onTouchTap: function onTouchTap() {
+	            window.open(url);
+	          } },
+	        'View'
+	      )
+	    )
+	  );
+	  //TODO
 	};
+
+	function ProfileMeta(icon, title, url) {
+	  this.icon = icon;
+	  this.title = title;
+	  this.url = url;
+	}
+
+	var profiles = [new ProfileMeta('https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png', 'GitHub', 'https://github.com/wkronmiller'), new ProfileMeta('https://www.facebook.com/images/fb_icon_325x325.png', 'Facebook', 'https://www.facebook.com/william.kronmiller.7'), new ProfileMeta('https://lh3.googleusercontent.com/-IMGb4CkWC98/VeXR6rWlM1I/AAAAAAAA7c4/aC-I28R6_psCNtxmIXAtNuMja5wCYUR9A/w1664-h1664/GooglePlus-logos-02.png', 'Google+', 'https://plus.google.com/+RoryKronmiller'), new ProfileMeta('https://www.duolingo.com/images/illustrations/owl-happy@2x.png', 'Duolingo', 'https://www.duolingo.com/wrk961')];
 
 	var Greeting = exports.Greeting = function Greeting() {
 	  return _react2.default.createElement(
 	    _materialUi.Paper,
-	    { style: bodyPaper },
+	    { style: _props.Styles.bodyPaper },
 	    _react2.default.createElement(
-	      'h1',
-	      null,
-	      'Welcome'
+	      _materialUi.Paper,
+	      { style: _props.Styles.bodyChildPaper },
+	      _react2.default.createElement(
+	        'h1',
+	        null,
+	        'Welcome'
+	      ),
+	      'I am currently migrating my website from Meteor/Blaze to React/Apollo. Sorry for the mess!'
 	    ),
-	    'I am currently migrating my website from Meteor/Blaze to React/Apollo. Sorry for the mess!'
+	    _react2.default.createElement(
+	      _materialUi.Paper,
+	      { style: _props.Styles.bodyChildPaper },
+	      _react2.default.createElement(
+	        'h1',
+	        null,
+	        'Profiles'
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { overflow: 'hidden' } },
+	        profiles.map(function (profile, index) {
+	          return _react2.default.createElement(
+	            'div',
+	            {
+	              key: index,
+	              style: { width: '10em', margin: '1em', float: 'left', height: '11em' } },
+	            _react2.default.createElement(Profile, {
+	              title: profile.title,
+	              icon: profile.icon,
+	              url: profile.url })
+	          );
+	        })
+	      )
+	    )
 	  );
 	};
 	Greeting.propTypes = _props.defaultProps;
@@ -92532,9 +92588,9 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	        value: true
+	  value: true
 	});
-	exports.defaultProps = undefined;
+	exports.Styles = exports.defaultProps = undefined;
 
 	var _react = __webpack_require__(1);
 
@@ -92543,10 +92599,29 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var defaultProps = exports.defaultProps = {
-	        location: _react2.default.PropTypes.object,
-	        params: _react2.default.PropTypes.object,
-	        children: _react2.default.PropTypes.element
+	  location: _react2.default.PropTypes.object,
+	  params: _react2.default.PropTypes.object,
+	  children: _react2.default.PropTypes.element
 	};
+
+	var Styles = exports.Styles = new function Styles() {
+	  this.indexContainer = {
+	    marginLeft: '5vw',
+	    marginRight: '5vw',
+	    minHeight: '90vh',
+	    fontFamily: 'Roboto'
+	  };
+	  this.bodyPaper = {
+	    minHeight: '90vh',
+	    width: '100%',
+	    padding: '2em'
+	  };
+	  this.bodyChildPaper = {
+	    width: 'auto',
+	    margin: '1em',
+	    padding: '2em'
+	  };
+	}();
 
 /***/ },
 /* 769 */
@@ -92580,7 +92655,6 @@
 	  width: '100%',
 	  marginLeft: '0',
 	  marginRight: '0',
-	  //position: 'absolute',
 	  display: 'block'
 	};
 
@@ -92589,6 +92663,11 @@
 	  var params = _ref.params;
 	  var location = _ref.location;
 
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    'TODO'
+	  );
 	  return _react2.default.createElement(
 	    _materialUi.Paper,
 	    { style: chatBoxStyle },
@@ -92614,13 +92693,25 @@
 
 	var _props = __webpack_require__(768);
 
+	var _Paper = __webpack_require__(609);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Blog = exports.Blog = function Blog() {
 	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    'Blog will return'
+	    _Paper2.default,
+	    { style: _props.Styles.bodyPaper },
+	    _react2.default.createElement(
+	      _Paper2.default,
+	      { style: _props.Styles.bodyChildPaper },
+	      _react2.default.createElement(
+	        'h1',
+	        null,
+	        'Blog Will Return'
+	      )
+	    )
 	  );
 	};
 	Blog.propTypes = _props.defaultProps;
@@ -92662,7 +92753,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Resume = undefined;
+	exports.ResumeTeX = exports.Resume = undefined;
 
 	var _react = __webpack_require__(1);
 
@@ -92702,23 +92793,35 @@
 	  var RBI = ResumeBlockListItem;
 
 	  var education = new ResumeBlock("Education", [new RBI("Rensselaer Polytechnic Institute", "Co-Terminal M.S./B.S. Computer Science -- Graduating May 2017", [new RBI("3.86/4.0 GPA"), new RBI("Dean's Honor List: Fall 2015"), new RBI("Dean's List: Fall 2013 - Spring 2015"), new RBI("Advisee of Professor Stacy Patterson, Director of the Networked Systems Lab")], "http://www.natcom.org/uploadedImages/More_Scholarly_Resources/Doctoral_Program_Resource_Guide/RPI_logo.jpg")]);
-	  var professionalExperience = new ResumeBlock("Professional Software Development Experience", [new RBI("Engineering Intern, ViaSat, Inc, Germantown, MD", "Summer 2016", [new RBI("Developed search engine for streaming data as part of team project"), new RBI("Developed software using Scala, Java, and AngularJS"), new RBI("Developed software for distributed computing platforms including Apache Spark")]), new RBI("Engineering Intern, ViaSat, Inc, Germantown, MD", "Summer 2015", [new RBI("Collaborated with team members to develop prototype Network Management System (NMS)"), new RBI("Practiced writing software for satellite communications terminals"), new RBI("Configured and wrote software to control Configuration Management Database (CMDB)"), new RBI("Developed software using Java, AngularJS, Bootstrap, and C")]), new RBI("Contractor, Windhorse Technologies, LLC", "Winter 2015", [new RBI("Designed and implemented database-backed web application for performing geographic voter targeting for RocketBase Solutions, LLC")]), new RBI("Intern, The Intellisis Corporation, San Diego, CA", "Summer 2014", [new RBI("Developed softare in C++, Python, and assembly language"), new RBI("Participated in Agile Scrum team development")]), new RBI("Intern, RocketBase Solutions, LLC, Herndon, VA", "Summer and Winter 2013", [new RBI("Devleoped software in support of voter targeting and political campaign management plagorm"), new RBI("Wrote software in C++, C#, and C"), new RBI("Performed analyses on production data using SQL queries"), new RBI("Maintained and deployed servers in a data-center environment")])]);
-	  var projects = new ResumeBlock('Independent and Academic Software Development Projects', [new RBI("Big DNS", "Cloud Seminar Final Project", [new RBI("Implemented data mining algorithms on Apache Spark with Apache Kafka to predict DNS queries"), new RBI("Testing feasibility of pre-fetching DNS records across caching DNS servers in a high-latency environment")]), new RBI("Timeshift", _react2.default.createElement(
-	    'div',
-	    null,
-	    'Software Design and Documentation Final Project - ',
-	    _react2.default.createElement(
-	      'a',
-	      { href: 'http://github.com/RPISDD' },
-	      'GitHub'
-	    )
-	  ), [new RBI("Developed modular student information and social networking platform with team of four"), new RBI("Implemented using the Polymer framework, Node.JS, and AWS DynamoDB")]), new RBI("Distributed Big Data Analytics in the Cloud", "Undergraduate Research Project", [new RBI("Implemented distributed broadcast/convergecast algorithm in C++ as member of two-person team")]), new RBI("Wuu Bernstein and Paxos Calendars", "Distributed Computing Class Projects", [new RBI("Built de-centralized calendar programs using distributed consensus algorithms"), new RBI("Deployed and tested in Amazon EC2 cloud")]), new RBI("MIPS Simulator", "Computer Organization Final Project", [new RBI("Constructed MIPS CPU simulator with classmate in C++ for Computer Organization final project")]), new RBI('Smart Doorbell', null, [new RBI("Created network-connected doorbell using waterproof Android smartphone, Raspberry Pi, UDP signaling"), new RBI("Re-implemented using Amazon SNS")]), new RBI('Test Network', null, [new RBI('Constructed personal network with multiple Linux servers, including those hosting personal websites, FreePBX VOIP system'), new RBI('Network utilizes 802.1Q VLANs, OSPF with Quagga OSPFd, multiple WAN gateways')])
+	  var professionalExperience = new ResumeBlock("Professional Software Development Experience", [new RBI("Engineering Intern, ViaSat, Inc, Germantown, MD", "Summer 2016", [new RBI("Developed search engine for streaming data as part of team project"), new RBI("Developed software using Scala, Java, and AngularJS"), new RBI("Made use of distributed computing platforms including Apache Spark")]), new RBI("Engineering Intern, ViaSat, Inc, Germantown, MD", "Summer 2015", [new RBI("Collaborated with team members to develop prototype Network Management System (NMS)"), new RBI("Practiced writing software for satellite communications terminals"), new RBI("Configured and wrote software to control Configuration Management Database (CMDB)"), new RBI("Developed software using Java, AngularJS, Bootstrap, and C")]), new RBI("Contractor, Windhorse Technologies, LLC", "Winter 2015", [new RBI("Designed and implemented database-backed web application for performing geographic voter targeting for RocketBase Solutions, LLC")]), new RBI("Intern, The Intellisis Corporation, San Diego, CA", "Summer 2014", [new RBI("Developed softare in C++, Python, and assembly language"), new RBI("Participated in Agile Scrum team development")]), new RBI("Intern, RocketBase Solutions, LLC, Herndon, VA", "Summer and Winter 2013", [new RBI("Devleoped software in support of voter targeting and political campaign management platform"), new RBI("Wrote software in C++, C#, and C"), new RBI("Performed analyses on production data using SQL queries"), new RBI("Maintained and deployed servers in a data-center environment")])]);
+
+	  var projects = new ResumeBlock('Independent and Academic Software Development Projects', [new RBI("Big DNS", "Cloud Seminar Final Project", [new RBI("Implemented data mining algorithms on Apache Spark with Apache Kafka to predict DNS queries"), new RBI("Tested feasibility of pre-fetching DNS records across caching DNS servers in a high-latency environment")]), new RBI("Timeshift", 'http://github.com/RPISDD', [new RBI("Developed modular student information and social networking platform with team of four"), new RBI("Implemented using the Polymer framework, Node.JS, and AWS DynamoDB")]), new RBI("Distributed Big Data Analytics in the Cloud", "Undergraduate Research Project", [new RBI("Implemented distributed broadcast/convergecast algorithm in C++ as member of two-person team")]), new RBI("Wuu Bernstein and Paxos Calendars", "Distributed Computing Class Projects", [new RBI("Built de-centralized calendar programs using distributed consensus algorithms"), new RBI("Deployed and tested in Amazon EC2 cloud")]), new RBI("MIPS Simulator", "Computer Organization Final Project", [new RBI("Constructed MIPS CPU simulator with classmate in C++ for Computer Organization final project")]), new RBI('Smart Doorbell', null, [new RBI("Created network-connected doorbell using waterproof Android smartphone, Raspberry Pi, UDP signaling"), new RBI("Re-implemented using Amazon Simple Notification Service (SNS) to send alerts to mobile phones")]), new RBI('Test Network', null, [new RBI('Constructed personal network with multiple Linux servers, including those hosting personal websites, FreePBX VOIP system'), new RBI('Network utilizes 802.1Q VLANs, OSPF with Quagga OSPFd, multiple WAN gateways')])
 	  //TODO: other personal projects
 	  ]);
 
 	  // Return list of items
 	  return [education, professionalExperience, projects];
 	}();
+
+	function listToTeX(header, list) {
+	  var listTex = list.map(function (rbi) {
+	    var splitHeader = rbi.header.split(', ');
+	    var header = '{\\bf ' + splitHeader.shift() + ' } ' + splitHeader.join(', ');
+	    var subheader = '\\hfill \\emph{' + (rbi.subHeader || '') + '}';
+	    var listPrefix = '\\begin{itemize} \\itemsep -2pt';
+	    var list = rbi.children.map(function (child) {
+	      return '\\item[-] ' + child.header;
+	    }).join('\n');
+	    var suffix = '\\end{itemize}';
+	    return [[header, subheader].join(' '), listPrefix, list, suffix].join('\n');
+	  }).join('\n');
+
+	  return ('\\section*{\\centerline{' + header + '}}\n' + listTex).replace('#', '\\#');
+	}
+
+	function rbiToTeX(rbi) {
+	  return listToTeX(rbi.title, rbi.list);
+	}
 
 	var Resume = exports.Resume = function Resume() {
 	  var entries = resumeList.map(function (rbi, index) {
@@ -92780,6 +92883,25 @@
 	      'div',
 	      null,
 	      entries
+	    )
+	  );
+	};
+
+	var ResumeTeX = exports.ResumeTeX = function ResumeTeX() {
+	  var outputStyle = {
+	    margin: '1em',
+	    width: '95%',
+	    height: '90vh'
+	  };
+	  //TODO: include formatting docs
+	  var texOutput = '\\documentclass[10pt,a4paper]{article}\n\\usepackage[latin1]{inputenc}\n\\usepackage{amsmath}\n\\usepackage{amsfonts}\n\\usepackage{amssymb}\n\\usepackage{graphicx}\n\\usepackage[margin=0.5in]{geometry}\n\\pagenumbering{gobble}\n\\usepackage[scaled]{helvet}\n\\renewcommand*\\familydefault{\\sfdefault}\n\\usepackage[T1]{fontenc}\n\\renewcommand{\\baselinestretch}{.6}\n\\begin{document}\n\\section*{\\centerline{\\LARGE William Rory Kronmiller}}\n{\\centerline{(571) 357-4662 | wrk961@gmail.com | william.kronmiller.net}}\n{\\noindent}\n' + rbiToTeX(resumeList[0]) + '\n\n' + rbiToTeX(resumeList[1]) + '\n\n' + rbiToTeX(resumeList[2]) + '\\end{document}';
+	  return _react2.default.createElement(
+	    _materialUi.Paper,
+	    null,
+	    _react2.default.createElement(
+	      'textarea',
+	      { style: outputStyle },
+	      texOutput
 	    )
 	  );
 	};
