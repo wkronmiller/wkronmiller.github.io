@@ -11,12 +11,22 @@
         return request;
     }
     const bucketParam = {Bucket: 'wkronmiller-public-photos'};
-    const listRequest = new Promise((resolve) => {
+    const filterBig = (key) => key.indexOf('fs8') === -1;
+    const filterSmall = (key) => key.indexOf('fs8') !== -1;
+    const imageFilter = (() => {
+        if(window.innerWidth < 600) {
+            return filterSmall;
+        }
+        console.log('Loading big images');
+        return filterBig;
+    })();
+    const imagesPromise = new Promise((resolve) => {
         goAnon(s3.listObjects(bucketParam), (err, data) => {
             if(err) { throw err; }
             const {Contents} = data;
             const urls = Contents
                 .map(({Key}) => Key)
+                .filter(imageFilter)
                 .map(key => `${bucketWebsite}/${key}`);
             const carouselDiv = $('.fotorama');
             urls.forEach(url => {
@@ -27,7 +37,7 @@
             return resolve(carouselDiv);
         });
     });
-    listRequest.then(() => {
+    imagesPromise.then(() => {
         const head = $('head');
         const fotoScript = document.createElement('script');
         fotoScript.src='http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js';
